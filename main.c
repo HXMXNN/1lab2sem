@@ -3,6 +3,7 @@
 #include "matrix.h"
 #include "int.h"
 #include "double.h"
+#include <windows.h>
 
 void run_extended_tests() {
     printf("\n>>> ЗАПУСК ТЕСТОВ (ВКЛЮЧАЯ КРАЙНИЕ СЛУЧАИ)\n");
@@ -46,6 +47,8 @@ void run_extended_tests() {
 }
 
 int main() {
+    SetConsoleOutputCP(1251);
+    SetConsoleCP(1251);
     run_extended_tests();
     return 0;
 }
