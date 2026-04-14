@@ -19,3 +19,4 @@ typedef struct {
     TypeMath *math;
     TypeOps *ops;
 } IType;
+#endif
