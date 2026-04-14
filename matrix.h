@@ -11,6 +11,6 @@ typedef struct {
 
 SquareMatrix* createMatrix(int n, IType* type);
 void freeMatrix(SquareMatrix* m);
-int addRowCombination(SquareMatrix* m, int targetRow, void** alphas);
+int addRowCombination(SquareMatrix* m, int targetRow, void** alphas, int alphaTypeId);
 
 #endif
