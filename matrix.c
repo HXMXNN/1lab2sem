@@ -29,6 +29,7 @@ int addRowCombination(SquareMatrix* m, int targetRow, void** alphas, int alphaTy
     if (!m || targetRow < 0 || targetRow >= m->size) return 200;
 
     if (m->type->typeId != alphaTypeId) {
+        printf("\n[ОШИБКА ТИПА]: Попытка смешать Matrix(ID:%d) и Alpha(ID:%d)\n", m->type->typeId, alphaTypeId);
         return 200;
     }
 
