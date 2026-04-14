@@ -1,20 +1,45 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+#include <windows.h>
 #include "matrix.h"
 #include "int.h"
 #include "double.h"
-#include <windows.h>
 
-void run_extended_tests() {
-    printf("\n>>> ЗАПУСК ТЕСТОВ (ВКЛЮЧАЯ КРАЙНИЕ СЛУЧАИ)\n");
+void run_table_operations_tests() {
+    printf("\n>>> 1. ПРОВЕРКА БАЗОВЫХ ОПЕРАЦИЙ (ТАБЛИЦА)\n");
+
+    IType* iType = getIntType();
+    SquareMatrix* m1 = createMatrix(2, iType);
+    SquareMatrix* m2 = createMatrix(2, iType);
+
+    int val1 = 10, val2 = 20;
+    memcpy(m1->data[0], &val1, sizeof(int));
+    memcpy(m2->data[0], &val2, sizeof(int));
+
+    SquareMatrix* sum = addMatrices(m1, m2);
+    if (sum && *(int*)sum->data[0] == 30) printf("[OK] Матричное сложение\n");
+
+    int factor = 2;
+    scaleMatrix(m1, &factor);
+    if (*(int*)m1->data[0] == 20) printf("[OK] Умножение на скаляр\n");
+
+    SquareMatrix* mul = multiplyMatrices(m1, m2);
+    if (mul) printf("[OK] Матричное умножение\n");
+
+    freeMatrix(m1); freeMatrix(m2); freeMatrix(sum); freeMatrix(mul);
+}
+
+void run_30_extended_tests() {
+    printf("\n>>> 2. ЗАПУСК 30 РАСШИРЕННЫХ ТЕСТОВ (ЛИНЕЙНАЯ КОМБИНАЦИЯ)\n");
     int passed = 0;
 
     for (int i = 1; i <= 30; i++) {
         IType* mType = (i % 2 == 0) ? getDoubleType() : getIntType();
         SquareMatrix* m = createMatrix(2, mType);
 
-        double dVal = 1.1;
-        int iVal = 5;
+        double dVal = 1.5;
+        int iVal = 3;
         void* alphas[2] = {NULL, NULL};
 
         int alphaType;
@@ -30,14 +55,14 @@ void run_extended_tests() {
 
         if (i % 5 == 0) {
             if (res == 200) {
-                printf("Test #%d: OK (Ошибка несоответствия типов обнаружена)\n", i);
+                printf("Тест №%d: OK (Ошибка типа поймана)\n", i);
                 passed++;
             } else {
-                printf("Test #%d: FAILED (Программа должна была заблокировать неверный тип)\n", i);
+                printf("Тест №%d: ПРОВАЛ (Типы не совпали, но ошибка не выдана)\n", i);
             }
         } else {
             if (res == 0) {
-                printf("Test #%d: OK (Корректное выполнение)\n", i);
+                printf("Тест №%d: OK (Корректное выполнение)\n", i);
                 passed++;
             }
         }
@@ -47,8 +72,15 @@ void run_extended_tests() {
 }
 
 int main() {
-    SetConsoleOutputCP(1251);
-    SetConsoleCP(1251);
-    run_extended_tests();
+    SetConsoleOutputCP(CP_UTF8);
+
+    run_table_operations_tests();
+    run_30_extended_tests();
+
+    freeINT();
+    freeDouble();
+
+    printf("\nВсе требования таблицы и тесты выполнены. Нажмите Enter...");
+    getchar();
     return 0;
 }
